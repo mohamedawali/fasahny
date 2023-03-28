@@ -13,6 +13,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileEvent>((event, emit)async {
     if(event is GetProfileData){
       await getProfileData(emit);
+    }else if(event is UpdateProfileData){
+      await updateProfile(event.name,emit);
     }else if(event is SaveImage){
       await saveImage(event.imageFile,emit);
     }else if(event is GetImage){
@@ -39,4 +41,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future saveImage(File imageFile,Emitter<ProfileState> emit) async{
 
     await _profileRepo.saveImage(imageFile);
+  }
+
+  updateProfile(String? name, Emitter<ProfileState> emit) async{
+    await _profileRepo.updateProfileData(name!);
+
   }}
