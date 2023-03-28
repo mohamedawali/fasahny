@@ -45,6 +45,14 @@
 
 ![WhatsApp Image 2023-03-28 at 3 14 42 AM](https://user-images.githubusercontent.com/103155342/228102395-c4d246fd-2033-4689-9572-087d239a6254.jpeg)
 
+## View shights
+
+![WhatsApp Image 2023-03-28 at 3 14 42 AM (1)](https://user-images.githubusercontent.com/103155342/228236843-3eee8bed-556f-42c5-b36f-8d16238710a5.jpeg)
+
+## Add comment and rate
+
+![WhatsApp Image 2023-03-28 at 3 14 41 AM (3)](https://user-images.githubusercontent.com/103155342/228237319-782e588b-e4bb-4c53-99ce-61f698954cbb.jpeg)
+
 
 ## Package
 
