@@ -5,3 +5,8 @@ abstract class AllItemsEvent {}
 class GetAllItemsEvent extends AllItemsEvent{
 
 }
+class SearchList extends AllItemsEvent{
+final String text;
+
+SearchList(this.text);
+}

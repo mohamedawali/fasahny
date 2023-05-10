@@ -16,6 +16,12 @@ class SearchFilterBloc extends Bloc<SearchFilterEvent, SearchFilterState> {
        await getCities(emit);
      }else if(event is SearchEvent){
        await search(event.location,event.safary,event.who,emit);
+     }else if(event is SelectHangout){
+       await selectHangout(event.hangout,emit);
+     }else if(event is SelectGo){
+       await selectGo(event.goWith,emit);
+     }else if(event is SelectCity){
+       await selectCity(event.city,emit);
      }
     });
   }
@@ -33,5 +39,16 @@ class SearchFilterBloc extends Bloc<SearchFilterEvent, SearchFilterState> {
     });
 
 
+  }
+
+  selectHangout(String item, Emitter<SearchFilterState> emit) {
+    String hangout = item;emit(HangoutState(hangout));
+  }
+
+  selectGo(String goWith, Emitter<SearchFilterState> emit) {
+    String go = goWith;emit(GoState(go));
+  }
+  selectCity(String city, Emitter<SearchFilterState> emit) {
+    String citi = city;emit(CityState(citi));
   }
 }

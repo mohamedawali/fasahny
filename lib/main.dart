@@ -48,7 +48,8 @@ class MyApp extends StatelessWidget {
             BlocProvider.value(value:  getIt<RateBloc>()),
             BlocProvider.value(value:  getIt<ViewBloc>()),
 
-          ],child:
+
+    ],child:
     MaterialApp(
 onGenerateRoute: navigator.route,
       debugShowCheckedModeBanner:false ,

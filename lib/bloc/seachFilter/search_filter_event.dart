@@ -10,3 +10,18 @@ class SearchEvent extends SearchFilterEvent {
 
   SearchEvent(this.location, this.safary, this.who);
 }
+class SelectHangout extends SearchFilterEvent {
+ final String hangout;
+
+ SelectHangout(this.hangout);
+}
+class SelectGo extends SearchFilterEvent {
+ final String goWith;
+
+ SelectGo(this.goWith);
+}
+class SelectCity extends SearchFilterEvent {
+ final String city;
+
+ SelectCity(this.city);
+}

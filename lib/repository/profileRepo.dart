@@ -38,8 +38,10 @@ return ImageProfileResponseModel.fromJson(response);
   }
   Future <ImageProfileResponseModel>getImage() async {
     token = await SharedPreferenceDataBase.getToken();
-
+    print('toknsgh$token');
     var response = await _profileService!.getImage(token);
+    var imageProfileResponseModel = ImageProfileResponseModel.fromJson(response);
+    print('knkn$imageProfileResponseModel');
     return ImageProfileResponseModel.fromJson(response);
   }
 }

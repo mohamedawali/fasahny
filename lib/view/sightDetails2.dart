@@ -37,8 +37,7 @@ class _ViewDetails2State extends State<ViewDetails2> {
     super.initState();
     viewDetails = widget.viewDetails;
     BlocProvider.of<ViewBloc>(context).add(AddViewEvent(1, viewDetails!.id));
-    favoriteBloc = BlocProvider.of<FavoriteBloc>(context);
-    favoriteBloc!.add(CheckFavoriteEvent(viewDetails!.id));
+    favoriteBloc = BlocProvider.of<FavoriteBloc>(context)..add(CheckFavoriteEvent(viewDetails!.id));
     BlocProvider.of<RateBloc>(context).add(GetComments(viewDetails!.id));
 
     rate = viewDetails!.avgOfRating;
@@ -100,15 +99,25 @@ class _ViewDetails2State extends State<ViewDetails2> {
                   ),
                 ),
                 Expanded(
-                    child: BlocListener<FavoriteBloc, FavoriteState>(
-                  listener: (context, state) {
-                    if (state is CheckFavoriteStat) {
-                      setState(() {
-                        isFavorites = state.isFavorite;
-                      });
-                    }
-                  },
-                  child: Row(
+                  //   child:
+                  //   BlocListener<FavoriteBloc, FavoriteState>(
+                  // listener: (context, state) {
+                  //   if (state is CheckFavoriteStat) {
+                  //     setState(() {
+                  //       isFavorites = state.isFavorite;
+                  //     });
+                  //   }
+                  // },
+                  child: BlocBuilder<FavoriteBloc, FavoriteState>(
+  builder: (context, state) {
+    if (state is CheckFavoriteStat) {
+      isFavorites = state.isFavorite;
+
+                      }else if(state is AddFavoriteStat&&state.add==200){
+    isFavorites= !isFavorites!;
+
+    }
+    return Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(
@@ -116,9 +125,6 @@ class _ViewDetails2State extends State<ViewDetails2> {
                             favoriteBloc!
                                 .add(AddFavoriteEvent(viewDetails!.id));
 
-                            setState(() {
-                              isFavorites = true;
-                            });
                           },
                           icon: isFavorites!
                               ?  Icon(
@@ -131,8 +137,10 @@ class _ViewDetails2State extends State<ViewDetails2> {
                                 )),
                       Text('${viewDetails!.loves}')
                     ],
-                  ),
-                ))
+                  );
+  },
+),
+                )
               ]),
               Divider(
                 thickness: 1,

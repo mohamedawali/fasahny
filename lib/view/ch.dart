@@ -12,7 +12,7 @@ class Ch extends StatelessWidget {
     return BlocListener<LoginRegisterBloc, LoginRegisterState>(
       listener: (context, state) {
 if(state is CheckLoginState){
-  print('st${state.token}');
+
           if(state.token ==null){
 
   Navigator.pushNamed(context, '/signIn');   }else{

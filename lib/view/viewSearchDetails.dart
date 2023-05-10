@@ -12,11 +12,9 @@ import '../models/allItemsResponse.dart';
 import '../models/commentsResponseModel.dart';
 import '../widget/dialoge.dart';
 
-
 class ViewSearchDetails extends StatefulWidget {
-
-final  Items? viewDetails;
- const ViewSearchDetails({this.viewDetails, Key? key}) : super(key: key);
+  final Items? viewDetails;
+  const ViewSearchDetails({this.viewDetails, Key? key}) : super(key: key);
 
   @override
   State<ViewSearchDetails> createState() => _ViewSearchDetailsState();
@@ -24,7 +22,7 @@ final  Items? viewDetails;
 
 class _ViewSearchDetailsState extends State<ViewSearchDetails> {
   Items? viewDetails;
-  bool? isFavorites=false;
+  bool? isFavorites = false;
   String? url;
   List<CommentsResponseModel>? commentsList;
   double? rate;
@@ -32,13 +30,10 @@ class _ViewSearchDetailsState extends State<ViewSearchDetails> {
   RateBloc? rateBloc;
   YoutubePlayerController? youtubePlayerController;
 
-
-
-
   @override
   void initState() {
     super.initState();
-   viewDetails= widget.viewDetails;
+    viewDetails = widget.viewDetails;
     favoriteBloc = BlocProvider.of<FavoriteBloc>(context);
     favoriteBloc!.add(CheckFavoriteEvent(viewDetails!.id));
     rate = viewDetails!.avgOfRating;
@@ -66,13 +61,12 @@ class _ViewSearchDetailsState extends State<ViewSearchDetails> {
       title: Text(
         '${viewDetails!.title}',
         style: GoogleFonts.manrope(
-            textStyle:
-            TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+            textStyle: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
       ),
       expandedHeight: screenSize.height / 2.5,
       stretch: true,
       pinned: true,
-      backgroundColor:  colorDark,
+      backgroundColor: colorDark,
       flexibleSpace: FlexibleSpaceBar(
           background: YoutubePlayer(
               controller: youtubePlayerController!,
@@ -99,46 +93,44 @@ class _ViewSearchDetailsState extends State<ViewSearchDetails> {
                     style: TextStyle(fontSize: 18.sp),
                   ),
                 ),
-                Expanded(child:
-                BlocListener<FavoriteBloc, FavoriteState>(
-                    listener: (context, state) {
-                      if (state is CheckFavoriteStat) {
-                       setState(() {
-    isFavorites=  state.isFavorite;
-                       });}},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                                onPressed: () {favoriteBloc!.add(AddFavoriteEvent(viewDetails!.id));
+                Expanded(child: BlocBuilder<FavoriteBloc, FavoriteState>(
+                  builder: (context, state) {
+                    if (state is CheckFavoriteStat) {
+                      isFavorites = state.isFavorite;
+                    } else if (state is AddFavoriteStat && state.add == 200) {
+                      isFavorites = !isFavorites!;
+                    }
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              favoriteBloc!
+                                  .add(AddFavoriteEvent(viewDetails!.id));
 
-                                  setState(() {
-
-                                  });
-                                },
-                                icon: isFavorites!
-                                    ?  Icon(
-                                  Icons.favorite,
-                                  color:colorDark,
-                                )
-                                    :  Icon(
-                                  Icons.favorite_outline,
-                                  color: colorDark,
-                                )),
-                            Text('${viewDetails!.loves}')
-                          ],
-                        )
-
-
-                    ))
+                              setState(() {});
+                            },
+                            icon: isFavorites!
+                                ? Icon(
+                                    Icons.favorite,
+                                    color: colorDark,
+                                  )
+                                : Icon(
+                                    Icons.favorite_outline,
+                                    color: colorDark,
+                                  )),
+                        Text('${viewDetails!.loves}')
+                      ],
+                    );
+                  },
+                ))
               ]),
-
               const Divider(
                 thickness: 1,
               ),
               Text('Description',
                   style:
-                  TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
               SizedBox(
                 height: 10.sp,
               ),
@@ -160,7 +152,6 @@ class _ViewSearchDetailsState extends State<ViewSearchDetails> {
               const Divider(
                 thickness: 1,
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -201,10 +192,9 @@ class _ViewSearchDetailsState extends State<ViewSearchDetails> {
               const Divider(
                 thickness: 1,
               ),
-
               Text('Location',
                   style:
-                  TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
               SizedBox(
                 height: 10.sp,
               ),
@@ -223,7 +213,7 @@ class _ViewSearchDetailsState extends State<ViewSearchDetails> {
               ),
               Text('Opining Hours',
                   style:
-                  TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
               SizedBox(
                 height: 10.sp,
               ),
@@ -244,115 +234,120 @@ class _ViewSearchDetailsState extends State<ViewSearchDetails> {
               ),
               Text('Ticket Price',
                   style:
-                  TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
               SizedBox(
                 height: 10.sp,
               ),
               RichText(
                   text: TextSpan(children: [
-                    TextSpan(
-                        text: 'Egyption : ',
-                        style: TextStyle(fontSize: 16.sp, color: Colors.black)),
-                    TextSpan(
-                        text: "${viewDetails!.ticketPriceForEgyptions}",
-                        style: TextStyle(fontSize: 16.sp, color: Colors.black))
-                  ])),
+                TextSpan(
+                    text: 'Egyption : ',
+                    style: TextStyle(fontSize: 16.sp, color: Colors.black)),
+                TextSpan(
+                    text: "${viewDetails!.ticketPriceForEgyptions}",
+                    style: TextStyle(fontSize: 16.sp, color: Colors.black))
+              ])),
               const SizedBox(
                 height: 5,
               ),
               RichText(
                   text: TextSpan(children: [
-                    TextSpan(
-                        text: 'Egyption Student : ',
-                        style: TextStyle(fontSize: 16.sp, color: Colors.black)),
-                    TextSpan(
-                        text: "${viewDetails!.ticketPriceForStudents}",
-                        style: TextStyle(fontSize: 16.sp, color: Colors.black))
-                  ])),
+                TextSpan(
+                    text: 'Egyption Student : ',
+                    style: TextStyle(fontSize: 16.sp, color: Colors.black)),
+                TextSpan(
+                    text: "${viewDetails!.ticketPriceForStudents}",
+                    style: TextStyle(fontSize: 16.sp, color: Colors.black))
+              ])),
               const SizedBox(
                 height: 5,
               ),
               RichText(
                   text: TextSpan(children: [
-                    TextSpan(
-                        text: 'Foreign : ',
-                        style: TextStyle(fontSize: 16.sp, color: Colors.black)),
-                    TextSpan(
-                        text: "${viewDetails!.ticketPriceForForeing}",
-                        style: TextStyle(fontSize: 16.sp, color: Colors.black))
-                  ])),
+                TextSpan(
+                    text: 'Foreign : ',
+                    style: TextStyle(fontSize: 16.sp, color: Colors.black)),
+                TextSpan(
+                    text: "${viewDetails!.ticketPriceForForeing}",
+                    style: TextStyle(fontSize: 16.sp, color: Colors.black))
+              ])),
               const Divider(
                 thickness: 1,
               ),
               Text('Review',
                   style:
-                  TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
               SizedBox(
                 height: 10.sp,
               ),
-        BlocBuilder<RateBloc, RateState>(
-
-          builder: (context, state) {
-            if(state is GetCommentsState){
-              commentsList = state.commentsResponse;
-              if(commentsList!.isEmpty){
-                return const SizedBox();
-              }else{
-                return Container(
-                  height:84.h,
-                  color: Colors.grey[200],
-                  child:
-
-
-                  ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: commentsList!.length,
-                      itemBuilder: (context, index) =>
-                          Card(elevation: 5,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: SizedBox(
-
-                              width: 220.w,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${commentsList![index].user}',
-                                      style: const TextStyle(fontSize: 16),
+              BlocBuilder<RateBloc, RateState>(
+                builder: (context, state) {
+                  if (state is GetCommentsState) {
+                    commentsList = state.commentsResponse;
+                    if (commentsList!.isEmpty) {
+                      return const SizedBox();
+                    } else {
+                      return Container(
+                        height: 84.h,
+                        color: Colors.grey[200],
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: commentsList!.length,
+                            itemBuilder: (context, index) => Card(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: SizedBox(
+                                    width: 220.w,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${commentsList![index].user}',
+                                            style:
+                                                const TextStyle(fontSize: 16),
+                                          ),
+                                          const SizedBox(
+                                            height: 4,
+                                          ),
+                                          ratingBar(
+                                              commentsList![index]
+                                                  .rate!
+                                                  .toDouble(),
+                                              20),
+                                          const SizedBox(
+                                            height: 2,
+                                          ),
+                                          Text(
+                                            commentsList![index].comment ?? '',
+                                            maxLines: 2,
+                                            style:
+                                                const TextStyle(fontSize: 14),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                    const SizedBox(
-                                      height: 4,
-                                    ),
-                                    ratingBar(commentsList![index].rate!.toDouble(),20),
-                                    const SizedBox(
-                                      height: 2,
-                                    ),
-                                    Text(
-                                      commentsList![index].comment ?? '', maxLines: 2,
-                                      style: const TextStyle(fontSize: 14),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                                                  )
-
-                  ),
-                );}}return const SizedBox();
-          },
-        ),
-        const SizedBox(height: 15,),
+                                  ),
+                                )),
+                      );
+                    }
+                  }
+                  return const SizedBox();
+                },
+              ),
+              const SizedBox(
+                height: 15,
+              ),
               Row(
                 children: [
                   InkWell(
-                    onTap: () => showDialogo(context, screenSize,viewDetails!.id),
-               child:   ratingBar(rate!, 30)
-    )
-
-                  ,Text(
+                      onTap: () =>
+                          showDialogo(context, screenSize, viewDetails!.id),
+                      child: ratingBar(rate!, 30)),
+                  Text(
                     '($rate)',
                     style: TextStyle(fontSize: 18.sp),
                   )
@@ -361,13 +356,10 @@ class _ViewSearchDetailsState extends State<ViewSearchDetails> {
             ],
           ),
         ),
-
         SizedBox(
           height: 20.sp,
         )
       ]),
     );
   }
-
-
 }

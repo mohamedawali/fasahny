@@ -9,15 +9,32 @@ part 'all_items_state.dart';
 
 class AllItemsBloc extends Bloc<AllItemsEvent, AllItemsState> {
  final GetAllItemsRepo? _allItemsRepo;
+ List<Items> itemsList=[];
   AllItemsBloc(this._allItemsRepo) : super(AllItemsInitial()) {
     on<AllItemsEvent>((event, emit)async {
      if(event is GetAllItemsEvent){
        await getAllItems(emit);
+     }else if(event is SearchList){
+
+        search(event.text,emit);
      }
     });
   }
 
   getAllItems(Emitter<AllItemsState> emit) async{
-       await   _allItemsRepo!.getAllItems().then((allItems) => emit(GetAllItemsState(allItems)));
+       await   _allItemsRepo!.getAllItems().then((allItems) {itemsList=allItems;emit(GetAllItemsState(allItems));
+
+
+       }
+
+       );
+  }
+
+  void search(String? text, Emitter<AllItemsState> emit) {
+
+    List<Items> list = itemsList.where((element) => element.title!.toLowerCase().contains(text!))
+         .toList();
+
+    emit(GetAllItemsState(list));
   }
 }

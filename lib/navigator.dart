@@ -1,5 +1,4 @@
 import 'package:fasahny/bloc/favorite/favorite_bloc.dart';
-import 'package:fasahny/bloc/loginRegister/login_register_bloc.dart';
 import 'package:fasahny/bloc/rate/rate_bloc.dart';
 import 'package:fasahny/models/allItemsResponse.dart';
 import 'package:fasahny/models/packagesResponsModel.dart';
@@ -30,17 +29,12 @@ class Navigators {
 
       case '/':
         return MaterialPageRoute(
-            builder: (_) => BlocProvider.value(
-                  value: getIt<LoginRegisterBloc>(),
-                  child: const SignIn(),
-                ));
+            builder:(BuildContext context) =>const SignIn());
 
       case '/signUp':
         return MaterialPageRoute(
-            builder: (_) => BlocProvider<LoginRegisterBloc>(
-                  create: (context) => getIt<LoginRegisterBloc>(),
-                  child: const SignUp(),
-                ));
+            builder:(BuildContext context) => const SignUp(),
+                );
 
       case '/mainHome':
         return MaterialPageRoute(

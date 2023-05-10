@@ -10,8 +10,8 @@ part 'login_register_state.dart';
 
 class LoginRegisterBloc extends Bloc<LoginRegisterEvent, LoginRegisterState> {
   final LoginRegisterRepo?  _loginRegisterRepo;
-
-
+bool isSecure=true;
+  bool isSecure2=true;
   LoginRegisterBloc(this._loginRegisterRepo) : super(LoginRegisterInitial()) {
     on<LoginRegisterEvent>((event, emit)async {
 
@@ -23,8 +23,11 @@ class LoginRegisterBloc extends Bloc<LoginRegisterEvent, LoginRegisterState> {
         await logout(emit);
       }else if(event is CheckLoginEvent){
         await checkLogin(emit);
+      }else if(event is ShowHideEvent){
+        await showHide(emit,event.isSecure,event.fieldIndex);
       }
     });
+
   }
 
 
@@ -54,4 +57,25 @@ class LoginRegisterBloc extends Bloc<LoginRegisterEvent, LoginRegisterState> {
     await SharedPreferenceDataBase.getToken().then((token) => emit(CheckLoginState(token)));
   }
 
+  showHide(Emitter<LoginRegisterState> emit, bool? isSecur, int? fieldIndex) {
+
+    print('ne$isSecur');
+    print('nem$fieldIndex');
+       if(   fieldIndex==1){
+         print('bef$isSecur');
+      isSecure= !isSecur!;
+         print('bef$isSecure');
+        //emit(ShowHide(isSecure));
+       }else if(fieldIndex==2){
+         isSecure2= !isSecur!;
+
+       }
+
+
+    emit(ShowHide(isSecure,isSecure2));
+  }
+
+
+
 }
+

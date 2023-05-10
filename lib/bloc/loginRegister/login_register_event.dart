@@ -20,6 +20,12 @@ class CheckLoginEvent extends LoginRegisterEvent{
 
   CheckLoginEvent();
 }
+class ShowHideEvent extends LoginRegisterEvent{
+
+final bool isSecure;
+final int fieldIndex;
+  ShowHideEvent(this.isSecure, this.fieldIndex);
+}
 class Logout extends LoginRegisterEvent{
 
 

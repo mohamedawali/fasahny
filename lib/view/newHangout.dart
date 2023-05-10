@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../constant/string.dart';
 import '../models/citiesResponse.dart';
 
 class NewHangout extends StatefulWidget {
@@ -21,15 +22,12 @@ class _NewHangoutState extends State<NewHangout> {
   List<SearchResponseModel> listSearch = [];
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   String? selectedHangout, selectedWith, selectedCity;
-  List<DropdownMenuItem<String>> cityList = [];
-  CitiesResponseModel? citiesList;
- List< CitiesResponseModel>? citiesLists;
+  List<Data> citiesLists=[];
   SearchFilterBloc? bloc;
 
   @override
   void initState() {
-    bloc = BlocProvider.of<SearchFilterBloc>(context);
-    BlocProvider.of<SearchFilterBloc>(context).add(GetCities());
+    bloc = BlocProvider.of<SearchFilterBloc>(context)..add(GetCities());
 
 
     super.initState();
@@ -46,12 +44,25 @@ class _NewHangoutState extends State<NewHangout> {
            Center(child: Text('Let\'s go to discover Trips ?',style: GoogleFonts.manrope(fontSize: 18,color: colorDark,fontWeight: FontWeight.bold),)),
 
           const SizedBox(height: 30,),
-          Form(
+        BlocBuilder<SearchFilterBloc, SearchFilterState>(
+        builder: (context, state) {
+      if (state is LoadedCities) {
+        citiesLists = state.cities!.data!;}
+      else if(state is HangoutState){
+        selectedHangout=    state.hangout;
+      }else if(state is GoState){
+        selectedWith=    state.goWith;
+      }else if(state is CityState){
+        selectedCity=    state.city;
+      }
+
+    return Form(
             key: _globalKey,
             child: Column(
               children: [
                 SizedBox(
-                  child: DropdownButtonFormField<String>(iconEnabledColor: colorDark,
+                  child:
+     DropdownButtonFormField<String>(iconEnabledColor: colorDark,
                       validator: (kind) => kind == null ? 'Choice Kind of Hangout' : null,
                       hint: const Text('Choice Kind of Hangout'),
                       decoration: InputDecoration(
@@ -61,30 +72,17 @@ class _NewHangoutState extends State<NewHangout> {
                       ),
                       iconSize: 30.sp,
                       style: TextStyle(color: Colors.black, fontSize: 16.sp),
-                      items: const [
-                        DropdownMenuItem<String>(
-                          value: 'Safari',
-                          child: Text('Safari'),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: 'Caltural',
-                          child: Text('Culture'),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: 'Nile cruise',
-                          child: Text('Nile cruise'),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: 'Religious',
-                          child: Text('Religious'),
-                        )
-                      ],
-                      onChanged: (String? newSelected) {
-                        setState(() {
-                          selectedHangout = newSelected;
-                        });
+                      items: item.map((element) =>  DropdownMenuItem<String>(
+                        value: element,
+                        child: Text(element.toString()),
+                      ),).toList()
+
+                      ,onChanged: (String? newSelected) {
+
+          bloc!.add(SelectHangout(newSelected!));
                       },
-                      value: selectedHangout),
+                      value: selectedHangout
+),
                 ),
                 SizedBox(
                   height: 20.h,
@@ -119,9 +117,7 @@ class _NewHangoutState extends State<NewHangout> {
                         )
                       ],
                       onChanged: (String? newSelected) {
-                        setState(() {
-                          selectedWith = newSelected;
-                        });
+                     bloc!.add(SelectGo(newSelected!));
                       },
                       value: selectedWith),
                 ),
@@ -129,13 +125,9 @@ class _NewHangoutState extends State<NewHangout> {
                   height: 20.h,
                 ),
                 SizedBox(
-                  child:  BlocBuilder<SearchFilterBloc, SearchFilterState>(
-                builder: (context, state) {
-                  if (state is LoadedCities) {
-                    citiesList = state.cities;
-                    print('ss${citiesList!.data!.length}');
+                  child:
 
-    return DropdownButtonFormField<String>(iconEnabledColor: colorDark,
+      DropdownButtonFormField<String>(iconEnabledColor: colorDark,
                     validator: (city) => city == null ? 'Select City': null,
                     hint: const Text('Select City'),
                     decoration: InputDecoration(
@@ -147,19 +139,16 @@ class _NewHangoutState extends State<NewHangout> {
                     ),
                     iconSize: 30.sp,
                     style: TextStyle(color: Colors.black, fontSize: 16.sp),
-                    items: citiesList!.data!.map((e) => DropdownMenuItem(
+                    items: citiesLists.map((e) => DropdownMenuItem(
                       value: '${e.governorateNameEn}',
                       child: Text('${e.governorateNameEn}'),
                     )).toList(),
                     onChanged: (String? newSelected) {
-                      setState(() {
-                        selectedCity = newSelected;
-                      });
+                     bloc!.add(SelectCity(newSelected!));
                     },
                     value: selectedCity,
-                  );}return const LinearProgressIndicator();
-  },
-),
+    )
+
                 ),
                 SizedBox(
                   height: 20.h,
@@ -189,7 +178,9 @@ class _NewHangoutState extends State<NewHangout> {
                 )
               ],
             ),
-          ),
+          );
+  },
+),
         ],
       ),
     );

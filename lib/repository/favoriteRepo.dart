@@ -11,16 +11,17 @@ String? token;
 
   addFavorite(int? itemId) async {
     token=  await SharedPreferenceDataBase.getToken();
-    await _favoriteService!.addFavorite(itemId!,token);
+    return await _favoriteService!.addFavorite(itemId!,token);
   }
 Future<List<FavoriteModel>>  getFavorite() async {
   token=  await SharedPreferenceDataBase.getToken();
  var favoriteList=   await _favoriteService!.getFavorite(token);
 return favoriteList.map((item) => FavoriteModel.fromJson(item)).toList();
   }
-  Future<void>  deleteFavorite(int itemId) async {
+  Future  deleteFavorite(int itemId) async {
     token=  await SharedPreferenceDataBase.getToken();
-  await _favoriteService!.deleteFavorite(itemId,token);
+    print('repo$itemId');
+    await _favoriteService!.deleteFavorite(itemId,token);
 
 
   }

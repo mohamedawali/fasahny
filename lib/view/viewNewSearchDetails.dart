@@ -35,7 +35,7 @@ class ViewNewSearchDetails extends StatefulWidget {
 class _ViewNewSearchDetailsState extends State<ViewNewSearchDetails> {
   SearchResponseModel? searchList;
 
-  bool? isFavorites = false;
+  bool isFavorites=false ;
   String? url;
   List<CommentsResponseModel>? commentsList;
   double? rate;
@@ -50,8 +50,10 @@ class _ViewNewSearchDetailsState extends State<ViewNewSearchDetails> {
 
     super.initState();
   searchList=  widget.searchList;
+
    BlocProvider.of<ViewBloc>(context).add(AddViewEvent(1, searchList!.id));
     favoriteBloc = BlocProvider.of<FavoriteBloc>(context);
+    isFavorites=favoriteBloc!.isFavorite( searchList!.id!);
     favoriteBloc!.add(CheckFavoriteEvent(searchList!.id));
 
    BlocProvider.of<RateBloc>(context).add(GetComments(searchList!.id));
@@ -114,23 +116,27 @@ class _ViewNewSearchDetailsState extends State<ViewNewSearchDetails> {
                   ),
                 ),
                 Expanded(child:
+                BlocBuilder<FavoriteBloc, FavoriteState>(
+  builder: (context, state) {
 
-                BlocListener<FavoriteBloc, FavoriteState>(
-  listener: (context, state) {
-    if (state is CheckFavoriteStat) {
-      setState(() {
-    isFavorites = state.isFavorite;
-      });  }},
-  child: Row(
+    if (state is AddFavoriteStat && state.add==200) {
+          isFavorites= !isFavorites;
+      }  else if (state is CheckFavoriteStat) {
+      isFavorites = state.isFavorite;
+
+
+    }
+    return Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     IconButton(
                         onPressed: () {
+
                         favoriteBloc!.add(AddFavoriteEvent(searchList!.id));
 
-                          setState(() {});
+
                         },
-                        icon: isFavorites!
+                        icon: isFavorites
                             ?  Icon(
                           Icons.favorite,
                           color: colorDark,
@@ -141,8 +147,12 @@ class _ViewNewSearchDetailsState extends State<ViewNewSearchDetails> {
                         )),
                     Text('${searchList!.loves}')
                   ],
-                ),
-)
+                );
+  },
+),
+                    
+
+
 
                 )
               ]),

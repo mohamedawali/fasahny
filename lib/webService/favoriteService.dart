@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:fasahny/webService/localDatabase.dart';
 import '../constant/string.dart';
 
 class FavoriteService {
@@ -8,7 +7,8 @@ class FavoriteService {
   addFavorite(int itemId, String? token) async {
     BaseOptions baseOptions =
         BaseOptions(baseUrl: url, headers: {"Authorization": token});
-    await Dio(baseOptions).post('fav/', data: {'itemid': itemId});
+    var response = await Dio(baseOptions).post('fav/', data: {'itemid': itemId});
+   return response.statusCode;
   }
 
   Future<List> getFavorite(String? token) async {
@@ -21,7 +21,9 @@ class FavoriteService {
   Future<void> deleteFavorite(int itemId, String? token) async {
     BaseOptions baseOptions =
         BaseOptions(baseUrl: url, headers: {"Authorization": token});
-    await Dio(baseOptions).post('fav/', data: {'itemid': itemId});
+    print('id$itemId');
+    var response = await Dio(baseOptions).post('fav/', data: {'itemid': itemId});
+    print('sss${response.statusCode}');
   }
 
   Future<Map<String, dynamic>> checkFavorite(int itemId, String? token) async {

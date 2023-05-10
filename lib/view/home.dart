@@ -15,7 +15,7 @@ import '../widget/circularCarouselSlider.dart';
 class Home extends StatelessWidget {
   List<RandomIMageResponseModel>? randomImageList;
   List<RecommendRecentViewModel>? recommendList;
-  List<RecommendRecentViewModel>? recentList;
+   List<RecommendRecentViewModel>? recentList;
   List<PackagesResponseModel>? packageList;
 
   Home({Key? key}) : super(key: key);

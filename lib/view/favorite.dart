@@ -23,8 +23,7 @@ class _FavoriteState extends State<Favorite> {
   @override
   void initState() {
     super.initState();
-   favoriteBloc= BlocProvider.of<FavoriteBloc>(context);
-favoriteBloc!.add(GetFavoriteEvent());
+   favoriteBloc= BlocProvider.of<FavoriteBloc>(context)..add(GetFavoriteEvent());
   }
 
   @override
@@ -62,11 +61,9 @@ favoriteBloc!.add(GetFavoriteEvent());
                         )),
                       Row(
                         children: [IconButton(onPressed: (){
-                          print('${listFavorite![index].item!.id}');
-                                favoriteBloc!.add(DeleteFavoriteEvent(listFavorite![index].item!.id));
-                          setState(() {
 
-                          });
+                                favoriteBloc!.add(DeleteFavoriteEvent(listFavorite![index].item!.id));
+
                         }, icon:    Icon(
                           Icons.favorite,
                           color: colorDark,

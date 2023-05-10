@@ -5,6 +5,12 @@ abstract class ProfileEvent {}
 class GetProfileData extends ProfileEvent {
 
 }
+class ChangePage extends ProfileEvent {
+final int index;
+
+ChangePage(this.index);
+}
+
 class UpdateProfileData extends ProfileEvent {
 final String? name;
 

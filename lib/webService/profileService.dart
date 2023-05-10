@@ -35,13 +35,15 @@ class ProfileService {
               BaseOptions(baseUrl: url, headers: {"Authorization": token}))
           .post('image/', data: image);
       res = response.data;
+      print('reg$res');
     } on DioError catch (e) {
       res = e.response!.data;
     }
     return res;
   }
   Future getImage(String? token) async {
-    String? token;
+
+    print('tokens$token');
     var res;
     try {
       Response response = await Dio(
@@ -50,6 +52,7 @@ class ProfileService {
       res = response.data;
     } on DioError catch (e) {
       res = e.response!.data;
+      print('ref$res');
     }
     return res;
   }

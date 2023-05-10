@@ -26,6 +26,7 @@ class LoginRegisterRepo {
     var response = await _loginRegisterService!.login(loginMap);
     var loginResponse = LoginResponseModel.fromJson(response);
     //await _sharedPreferenceDataBase.saveToken(loginResponse.token);
+    print('todss${loginResponse.token}');
     await SharedPreferenceDataBase.saveToken(loginResponse.token);
     return loginResponse;
   }

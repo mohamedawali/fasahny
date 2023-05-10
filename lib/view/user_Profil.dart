@@ -61,15 +61,14 @@ email= TextEditingController(text: profileData.data!.email);
                       child: BlocBuilder<ProfileBloc, ProfileState>(
                         builder: (context, state) {
                           if (state is LoadedImage) {
-                            images = state.image;
+                            images = state.image;}
                             return CircleAvatar(
                                 radius: 75,
-                                backgroundImage: NetworkImage("$images"));
+                                backgroundImage:images==null?
+    NetworkImage("https://media.istockphoto.com/id/587805156/vector/profile-picture-vector-illustration.jpg?s=612x612&w=0&k=20&c=gkvLDCgsHH-8HeQe7JsjhlOY6vRBJk_sKW9lyaLgmLo=")
+        :NetworkImage("$images"));
                           }
-                          return  const CircleAvatar(
-                              radius: 75,
-                              backgroundImage: NetworkImage("https://media.istockphoto.com/id/587805156/vector/profile-picture-vector-illustration.jpg?s=612x612&w=0&k=20&c=gkvLDCgsHH-8HeQe7JsjhlOY6vRBJk_sKW9lyaLgmLo="));
-                        },
+
                       ),
                     ),
                     Positioned(
@@ -142,9 +141,7 @@ email= TextEditingController(text: profileData.data!.email);
 
     File imageFile = File(file!.path);
      bloc!.add(SaveImage(imageFile));
-    setState(() {
 
-    });
   }
 
 }

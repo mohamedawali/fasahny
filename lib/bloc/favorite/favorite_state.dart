@@ -4,7 +4,10 @@ part of 'favorite_bloc.dart';
 abstract class FavoriteState {}
 
 class FavoriteInitial extends FavoriteState {}
-
+class AddFavoriteStat extends FavoriteState {
+  final int add;
+  AddFavoriteStat(this. add);
+}
 class GetFavoriteStat extends FavoriteState {
  final List<FavoriteModel>? favoriteList;
   GetFavoriteStat(this. favoriteList);

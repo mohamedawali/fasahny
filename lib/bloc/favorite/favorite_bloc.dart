@@ -9,11 +9,12 @@ part 'favorite_state.dart';
 
 class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   final FavoriteRepo? _favoriteRepo;
+  List<FavoriteModel>_favoriteList=[];
   FavoriteBloc(this._favoriteRepo) : super(FavoriteInitial()) {
     on<FavoriteEvent>((event, emit) async {
 
       if (event is AddFavoriteEvent) {
-        await addFavorite( event.itemId);
+        await addFavorite( event.itemId,emit);
       }  else if (event is GetFavoriteEvent) {
         await getFavorite(emit);
       }else if (event is DeleteFavoriteEvent) {
@@ -24,8 +25,12 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     });
   }
 
-  addFavorite( int? itemId)async {
-   await _favoriteRepo!.addFavorite(itemId!);
+  addFavorite( int? itemId, Emitter<FavoriteState> emit)async {
+    var value = await _favoriteRepo!.addFavorite(itemId!);
+ emit(AddFavoriteStat(value));
+  }
+  bool isFavorite(int id){
+  return  _favoriteList.any((element) => element.item!.id==id);
   }
 
   getFavorite(Emitter<FavoriteState> emit) async {
@@ -33,8 +38,9 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     await _favoriteRepo!
         .getFavorite()
         .then((favoriteList) {
-      print('bbb${favoriteList.length}');
-      emit(GetFavoriteStat(favoriteList));});
+
+      _favoriteList=favoriteList;
+      emit(GetFavoriteStat(_favoriteList));});
   }
 
   checkFavorite(Emitter<FavoriteState> emit, int? itemId) async{
@@ -42,9 +48,13 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
 
   }
 
-  deleteFavorite(Emitter<FavoriteState> emit, int? itemId) {
-     _favoriteRepo!
+  deleteFavorite(Emitter<FavoriteState> emit, int? itemId) async{
+    print('bloc$itemId');
+    await _favoriteRepo!
         .deleteFavorite(itemId!);
+    _favoriteList.removeWhere((element) =>element.item!.id==itemId);
+    emit(GetFavoriteStat(_favoriteList));
+
 
 
 

@@ -22,7 +22,7 @@ class MainHome extends StatefulWidget {
 }
 
 class _MainHomeState extends State<MainHome> {
-  int _currentIndex = 0;
+  int _currentIndex=0 ;
   CitiesResponseModel? citiesList;
   ProfileResponseModel? profileResponseModel;
   List<RandomIMageResponseModel>? randomImageList;
@@ -30,27 +30,33 @@ class _MainHomeState extends State<MainHome> {
   List<RecommendRecentViewModel>? recentImageList;
   List<PackagesResponseModel>? packagemageList;
   List<FavoriteModel>? listFavorite;
-
+  ProfileBloc? profileBloc;
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ProfileBloc>(context).add(GetProfileData());
+   profileBloc= BlocProvider.of<ProfileBloc>(context)..add(GetProfileData());
 
-    return Scaffold(
+
+    return BlocBuilder<ProfileBloc, ProfileState>(
+
+        builder: (context, state) {
+          if(state is ChangeState){
+            _currentIndex= state.currentIndex;
+
+          }else if(state is ProfileData){
+          profileResponseModel = state.data;}
+
+          return Scaffold(
         appBar: AppBar(
           backgroundColor: colorDark,
           elevation: 0,
           foregroundColor: Colors.black,
         ),
-        drawer: BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (context, state) {
-            if (state is ProfileData) {
-              profileResponseModel = state.data;
-            }
+        drawer:
 
-            return Drawer(child: DrawerPage(profileResponseModel));
-          },
-        ),
-        bottomNavigationBar: BottomNavigationBar(
+              Drawer(child: DrawerPage(profileResponseModel)),
+
+        bottomNavigationBar:  BottomNavigationBar(
+
             unselectedIconTheme: IconThemeData(color: colorLight),
             selectedIconTheme: IconThemeData(color: colorDark),
             fixedColor: colorDark,
@@ -66,11 +72,13 @@ class _MainHomeState extends State<MainHome> {
             ],
             type: BottomNavigationBarType.fixed,
             currentIndex: _currentIndex,
-            onTap: (index) => setState(() {
-                  _currentIndex = index;
-                })),
-        body: bottomNavigator(_currentIndex));
-  }
+            onTap: (index) {profileBloc!.add(ChangePage(index));}
+
+
+        ),
+
+        body: bottomNavigator( _currentIndex));
+  });}
 
   bottomNavigator(int currentIndex) {
     switch (currentIndex) {
